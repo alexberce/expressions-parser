@@ -22,6 +22,11 @@ MID(?=[(])                                                      { return 'MID'; 
 FIND(?=[(])                                                     { return 'FIND'; }
 CONTAINS(?=[(])                                                 { return 'CONTAINS'; }
 ADDSLASHES(?=[(])                                               { return 'ADDSLASHES'; }
+LOCALNOW(?=[(])                                                 { return 'LOCALNOW'; }
+LOCALTODAY(?=[(])                                               { return 'LOCALTODAY'; }
+NOW(?=[(])                                                      { return 'NOW'; }
+YEAR(?=[(])                                                     { return 'YEAR'; }
+TODAY(?=[(])                                                    { return 'TODAY'; }
 "*"                                                             { return '*'; }
 "/"                                                             { return '/'; }
 "-"                                                             { return '-'; }
@@ -99,7 +104,7 @@ e
     | VARIABLE
         {$$ = yytext;} 
     | MATH_OPERATIONS
-    | LOGIC_OPERATIONS
+    | COMPARISON_OPERATIONS
     | '(' e ')'
         {$$ = $2;}
     | FUNCTION
@@ -122,7 +127,7 @@ MATH_OPERATIONS
         {$$ = -$2;}
     ;
 
-LOGIC_OPERATIONS
+COMPARISON_OPERATIONS
     : e '=' e 
         {$$ = $1 == $3}
     | e '<' '=' e 
@@ -137,14 +142,14 @@ LOGIC_OPERATIONS
         {$$ = $1 < $3;}
     ;
 
-BOOLEAN_RETURNING_EXPRESSIONS
-    : AND
-    | OR
-    | NOT
-    | LOGIC_OPERATIONS
+FUNCTION
+    : LOGIC_OPERATIONS_FUNCTIONS
+    | ARITHMETIC_FUNCTIONS
+    | STRING_FUNCTIONS
+    | DATE_TIME_FUNCTIONS
     ;
 
-FUNCTION
+LOGIC_OPERATIONS_FUNCTIONS
     : IF '(' e ',' e ',' e ')'
         {$$ = $3 ? $5 : $7;}
     | AND '(' e ',' e ')'
@@ -153,13 +158,19 @@ FUNCTION
         {$$ = $3 || $5;}
     | NOT '(' e ')'
         {$$ = !$1;}
-    | MAX '(' expression_list ')'
+    ;
+
+ARITHMETIC_FUNCTIONS
+    : MAX '(' expression_list ')'
         {$$ = Math.max.apply(null, $expression_list);}
     | MIN '(' expression_list ')'
         {$$ = Math.min.apply(null, $expression_list);}
     | ROUND '(' e ',' e ')'
         {$$ = Math.round(($3 + Number.EPSILON) * Math.pow(10, $5)) / Math.pow(10, $5);}
-    | CONCATENATE '(' expression_list ')'
+    ;
+
+STRING_FUNCTIONS
+    : CONCATENATE '(' expression_list ')'
         {$$ = $expression_list.join('');}
     | LEFT '(' e ',' e ')'
         {$$ = $3.substring(0,~~$5+1);}
@@ -178,5 +189,42 @@ FUNCTION
         {
             var str = JSON.stringify(String($3))
             $$ = str.substring(1, str.length-1);
+        }
+    ;
+
+DATE_TIME_FUNCTIONS
+    : LOCALNOW '(' ')'
+        {
+            $$ = (new Date()).toLocaleString('en-GB', { 
+                hour12: false, 
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+                hour: "2-digit", 
+                minute: "2-digit"
+            }).split(',').join('');
+        }
+    | LOCALTODAY '(' ')'
+        {
+            $$ = (new Date()).toLocaleString('en-GB', { 
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric",
+            });
+        }
+    | NOW '(' ')'
+        {
+            $$ = Date.now();
+        }
+    | YEAR '(' e ')'
+        {
+            var d = new Date($3);
+            $$ = d.getFullYear();
+        }
+    | TODAY '(' ')'
+        {
+            //Calculation accurate only for the Gregorian calendar
+            var now = new Date();
+            $$ = 25567 + 1 + Math.floor(now/8.64e7);
         }
     ;
