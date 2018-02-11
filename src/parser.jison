@@ -148,7 +148,7 @@ LOGIC_OPERATIONS_FUNCTIONS
     | OR '(' e ',' e ')'
         {$$ = $3 || $5;}
     | NOT '(' e ')'
-        {$$ = !$1;}
+        {$$ = !$3;}
     ;
 
 ARITHMETIC_FUNCTIONS
@@ -171,7 +171,7 @@ STRING_FUNCTIONS
         {$$ = $3.substring(~~$5, ~~$5+~~$7);}
     | FIND '(' e ',' e ')'
         {
-            var position = $3.indexOf($5)
+            var position = $5.indexOf($3)
             $$ = position > -1 ? position + 1 : -1;
         }
     | CONTAINS '(' e ',' e ')'
