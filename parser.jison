@@ -26,6 +26,9 @@ CONCATENATE(?=[(])                                              { return 'CONCAT
 ")"                                                             { return ')'; }
 ","                                                             { return ','; }
 "@"                                                             { return '@'; }
+">" 								                            {return '>';}
+"<"                                                             {return '<';}
+"="	                                                            {return '=';}
 <<EOF>>                                                         { return 'EOF'; }
 " "                                                             { return ' ';}
 .                                                               { return 'INVALID'; }
@@ -43,6 +46,9 @@ CONCATENATE(?=[(])                                              { return 'CONCAT
 
 /* operator associations and precedence */
 
+%left '='
+%left '<=' '>=' '<>'
+%left '>' '<'
 %left '+' '-'
 %left '*' '/'
 %left '^'
@@ -83,17 +89,17 @@ PRIMITIVES
     ;
 
 e
-    : operations
-        {$$ = $1;}
+    : PRIMITIVES
+    | VARIABLE
+        {$$ = yytext;} 
+    | MATH_OPERATIONS
+    | LOGIC_OPERATIONS
     | '(' e ')'
         {$$ = $2;}
-    | PRIMITIVES
-    | VARIABLE
-        {$$ = yytext;}
     | FUNCTION
     ;
 
-operations
+MATH_OPERATIONS
     : e '+' e
         {$$ = $1 + $3;}
     | e '-' e
@@ -110,10 +116,26 @@ operations
         {$$ = -$2;}
     ;
 
+LOGIC_OPERATIONS
+    : e '=' e 
+        {$$ = $1 == $3}
+    | e '<' '=' e 
+        {$$ = $1 <= $4}
+    | e '>' '=' e 
+        {$$ = $1 >= $4}
+    | e '<' '>' e 
+        {$$ = $1 != $4;}
+    | e '>' e 
+        {$$ = $1 > $3;}
+    | e '<' e 
+        {$$ = $1 < $3;}
+    ;
+
 BOOLEAN_RETURNING_EXPRESSIONS
     : AND
     | OR
     | NOT
+    | LOGIC_OPERATIONS
     ;
 
 FUNCTION
