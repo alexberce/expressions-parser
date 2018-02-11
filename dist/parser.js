@@ -166,7 +166,7 @@ case 35:
 this.$ = $$[$0-3] || $$[$0-1];
 break;
 case 36:
-this.$ = !$$[$0-3];
+this.$ = !$$[$0-1];
 break;
 case 37:
 this.$ = Math.max.apply(null, $$[$0-1]);
@@ -191,7 +191,7 @@ this.$ = $$[$0-5].substring(~~$$[$0-3], ~~$$[$0-3]+~~$$[$0-1]);
 break;
 case 44:
 
-            var position = $$[$0-3].indexOf($$[$0-1])
+            var position = $$[$0-1].indexOf($$[$0-3])
             this.$ = position > -1 ? position + 1 : -1;
         
 break;
