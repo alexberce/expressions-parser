@@ -16,6 +16,12 @@ MAX(?=[(])                                                      { return 'MAX'; 
 MIN(?=[(])                                                      { return 'MIN'; }
 ROUND(?=[(])                                                    { return 'ROUND'; }
 CONCATENATE(?=[(])                                              { return 'CONCATENATE'; }
+LEFT(?=[(])                                                     { return 'LEFT'; }
+RIGHT(?=[(])                                                    { return 'RIGHT'; }
+MID(?=[(])                                                      { return 'MID'; }
+FIND(?=[(])                                                     { return 'FIND'; }
+CONTAINS(?=[(])                                                 { return 'CONTAINS'; }
+ADDSLASHES(?=[(])                                               { return 'ADDSLASHES'; }
 "*"                                                             { return '*'; }
 "/"                                                             { return '/'; }
 "-"                                                             { return '-'; }
@@ -85,7 +91,7 @@ PRIMITIVES
     | NUMBER
         {$$ = Number(yytext);}
     | STRING
-        {$$ = yytext;}
+        {$$ = yytext.substring(1, yytext.length-1);}
     ;
 
 e
@@ -155,15 +161,22 @@ FUNCTION
         {$$ = Math.round(($3 + Number.EPSILON) * Math.pow(10, $5)) / Math.pow(10, $5);}
     | CONCATENATE '(' expression_list ')'
         {$$ = $expression_list.join('');}
+    | LEFT '(' e ',' e ')'
+        {$$ = $3.substring(0,~~$5+1);}
+    | RIGHT '(' e ',' e ')'
+        {$$ = $3.substring(~~$3.length-~~$5-1);}
+    | MID '(' e ',' e ',' e ')'
+        {$$ = $3.substring(~~$5, ~~$5+~~$7);}
+    | FIND '(' e ',' e ')'
+        {
+            var position = $3.indexOf($5)
+            $$ = position > -1 ? position + 1 : -1;
+        }
+    | CONTAINS '(' e ',' e ')'
+        {$$ = $3.indexOf($5) !== -1;}
+    | ADDSLASHES '(' e ')'
+        {
+            var str = JSON.stringify(String($3))
+            $$ = str.substring(1, str.length-1);
+        }
     ;
-
-    /*
-    TODO:
-        | COMPUTE
-        | LEFT
-        | RIGHT
-        | MID
-        | FIND
-        | CONTAINS
-        | ADDSLASHES
-    */
