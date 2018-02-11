@@ -1,16 +1,18 @@
-# expressions-parser
+# Expressions Parser
 
-# Installation
+Installation
+------------
     npm install jison -g
 
-## Usage from the command line
+Usage from the command line
+-----------------------
 * jison parser.jison
 * node parser.js test
 
 License
 -------
 
-> Copyright (c) 2009-2014 Zachary Carter
+> Copyright (c) 2018 Alexandru Berce
 > 
 >  Permission is hereby granted, free of
 > charge, to any person  obtaining a

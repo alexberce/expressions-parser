@@ -1,9 +1,6 @@
-/* description: Parses and executes mathematical expressions. */
-
 /* lexical grammar */
 %lex
 %%
-
 \s+                                                             /* skip whitespace */
 "null"                                                          { return 'NULL'; }
 "true"                                                          { return 'TRUE'; }
@@ -139,21 +136,12 @@ FUNCTION
     ;
 
     /*
-    | AND
-    | OR
-    | NOT
-
-    | COMPUTE
-    | MAX
-    | MIN
-    | ROUND
-
-    | CONCATENATE
-    | LEFT
-    | RIGHT
-    | MID
-    | FIND
-    | CONTAINS
-    | ADDSLASHES
-    ;
-*/
+    TODO:
+        | COMPUTE
+        | LEFT
+        | RIGHT
+        | MID
+        | FIND
+        | CONTAINS
+        | ADDSLASHES
+    */
