@@ -46,15 +46,6 @@ TODAY(?=[(])                                                    { return 'TODAY'
 
 /lex
 
-%token NAME
-%token STRING
-%token FUNCTION_NAME
-%token FUNCTION
-%token NUMBER
-%token TRUE FALSE
-%token NULL
-%token EOF
-
 /* operator associations and precedence */
 
 %left '='
