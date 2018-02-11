@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Expression Parser</title>
+    <script
+        src="http://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous" 
+    ></script>
+    <script src="../dist/parser.js"></script>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+  </head>
+  <body>
+      <div id="wrapper">
+        <h1>Expression Parser Demo</h1>
+        <p>This demo parses mathematical expressions and returns the answer, keeping the correct order of operations. </p>
+        <p>Enter an expression to evaluate, such as <b>4 ^ 2 + 5</b></p>
+        <p>
+            <div id="expression-wrapper">
+                <span>Expression</span>
+                <textarea id='expression'>4 ^ 2 + 5</textarea>
+            </div>
+            
+            <div id='examples-wrapper'>
+                <span id='examples-toggle'>Examples:</span>
+                <div id='examples'>
+                    <div class="example">IF(CONTAINS("123ContactForm", "123"), "IT CONTAINS", "DOES NOT CONTAIN")</div>
+                    <div class="example">CONCATENATE(MIN(1,2,3), MAX(0,1,2), FIND("FormBuilder", "r"), " ", "rocks!")</div>
+                    <div class="example">MID("alex@123formbuilder.com",FIND("alex@123formbuilder.com", "@"),
+                            FIND("alex@123formbuilder.com",".")-FIND("alex@123formbuilder.com", "@")-1)</div>
+                </div>
+            </div>
+                
+            <div id='result-wrapper'>
+                <span>Result</span>
+                <textarea id="result"></textarea>
+            </div>
+        </p>
+    </div>
+  </body>
+  <script>
+        $(document).ready(function () {
+
+            function calculate(){
+                try {
+                    var result = parser.parse($("#expression").val());
+                    $("#result").html(String(result));
+                } catch (e) {
+                    $("#result").html(String(e));
+                }
+            }
+
+            $("#expression").keyup(function () {
+                calculate();
+            });
+
+            $('#examples-toggle').click(function(){
+                $('#examples').slideToggle();
+            });
+
+            calculate();
+        });
+    </script>
+</html>
