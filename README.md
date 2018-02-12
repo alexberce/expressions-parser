@@ -1,20 +1,55 @@
-# Expressions Parser
+# Expressions Parser Engine
 
-Installation
-------------
-    npm install jison -g
-
-Usage from the command line
------------------------
-* jison parser.jison
-* node parser.js test
-
-Live demo
+## Live demo
 -----------------------
 [http://parser.invobox.com/](http://parser.invobox.com/)
 
-License
--------
+Installation
+-----------------------
+Jison can be installed for [Node](http://nodejs.org) using [`npm`](http://github.com/isaacs/npm/)
+
+Using npm:
+
+    npm install jison -g
+    npm install
+
+## Scripts
+-----------------------
+
+* Build
+
+        npm run build
+    _Generate JS file from Jison_ 
+
+## Usage from the command line
+-----------------------
+    cd dist
+    echo "2^32 / 1024" > testCalculation
+    node parser.js testCalculation
+
+This will print out `4194304`.
+
+## Usage from a JS
+------------------------
+
+```javascript
+//Assuming the parser was included on the webpage
+// e.g. <script src="dist/parser.js"></script>
+
+parser.parse("5 ^ 2 + 3");
+// returns 28
+
+
+parser.parse("YEAR(NOW())");
+// returns the current year
+```
+
+## Example
+-----------------------
+[Parse expressions in a text](/web/index.html)
+
+## License
+-----------------------
 
 > Copyright (c) 2018 Alexandru Berce
 > 
