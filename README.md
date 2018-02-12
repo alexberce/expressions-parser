@@ -1,11 +1,11 @@
 # Expressions Parser Engine
 
-Live demo
------------------------
+## Live demo
+
 [http://parser.invobox.com/](http://parser.invobox.com/)
 
-Installation
------------------------
+## Installation
+
 Jison can be installed for [Node](http://nodejs.org) using [`npm`](http://github.com/isaacs/npm/)
 
 Using npm:
@@ -14,7 +14,6 @@ Using npm:
     npm install
 
 ## Scripts
------------------------
 
 * Build
 
@@ -22,7 +21,7 @@ Using npm:
     _Generate JS file from Jison_ 
 
 ## Usage from the command line
------------------------
+
     cd dist
     echo "2^32 / 1024" > testCalculation
     node parser.js testCalculation
@@ -30,7 +29,6 @@ Using npm:
 This will print out `4194304`.
 
 ## Usage from a JS
-------------------------
 
 ```javascript
 //Assuming the parser was included on the webpage
@@ -45,11 +43,10 @@ parser.parse("YEAR(NOW())");
 ```
 
 ## Example
------------------------
+
 [Parse expressions in a text](/web/index.html)
 
 ## License
------------------------
 
 > Copyright (c) 2018 Alexandru Berce
 > 
