@@ -28,7 +28,7 @@ Using npm:
 
 This will print out `4194304`.
 
-## Usage from a JS
+## Usage from JS
 
 ```javascript
 //Assuming the parser was included on the webpage
