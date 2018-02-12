@@ -152,7 +152,7 @@ Dear @FIELD("firstName")~,
 Thanks for your interest.
 This offer is available until 31/12/@YEAR(@NOW())~!
                         
-Here are your details details:
+Here are your details:
 Name: @CONCATENATE(@FIELD('firstName'), ' ', @FIELD('lastName'))~
 Email: @FIELD('email')~
 Coupon code: @IF(@FIELD('score') > 65, '65OFF', '15OFF')~
