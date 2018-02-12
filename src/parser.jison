@@ -27,6 +27,14 @@ LOCALTODAY(?=[(])                                               { return 'LOCALT
 NOW(?=[(])                                                      { return 'NOW'; }
 YEAR(?=[(])                                                     { return 'YEAR'; }
 TODAY(?=[(])                                                    { return 'TODAY'; }
+FIELD(?=[(])                                                    { return 'FIELD'; }
+RAND(?=[(])                                                     { return 'RAND'; }
+ABS(?=[(])                                                      { return 'ABS'; }
+COMPUTE(?=[(])                                                  { return 'COMPUTE'; }
+SQRT(?=[(])                                                     { return 'SQRT'; }
+LEN(?=[(])                                                      { return 'LEN'; }
+UPPER(?=[(])                                                    { return 'UPPER'; }
+LOWER(?=[(])                                                    { return 'LOWER'; }
 "*"                                                             { return '*'; }
 "/"                                                             { return '/'; }
 "-"                                                             { return '-'; }
@@ -37,11 +45,11 @@ TODAY(?=[(])                                                    { return 'TODAY'
 ")"                                                             { return ')'; }
 ","                                                             { return ','; }
 "@"                                                             { return '@'; }
-">" 								                            {return '>';}
-"<"                                                             {return '<';}
-"="	                                                            {return '=';}
+">" 								                            { return '>'; }
+"<"                                                             { return '<'; }
+"="	                                                            { return '='; }
 <<EOF>>                                                         { return 'EOF'; }
-" "                                                             { return ' ';}
+" "                                                             { return ' '; }
 .                                                               { return 'INVALID'; }
 
 /lex
@@ -138,6 +146,7 @@ FUNCTION
     | ARITHMETIC_FUNCTIONS
     | STRING_FUNCTIONS
     | DATE_TIME_FUNCTIONS
+    | MATH_AND_TRIG
     ;
 
 LOGIC_OPERATIONS_FUNCTIONS
@@ -158,6 +167,17 @@ ARITHMETIC_FUNCTIONS
         {$$ = Math.min.apply(null, $expression_list);}
     | ROUND '(' e ',' e ')'
         {$$ = Math.round(($3 + Number.EPSILON) * Math.pow(10, $5)) / Math.pow(10, $5);}
+    ;
+
+MATH_AND_TRIG
+    : COMPUTE '(' e ')'
+        {$$ = [$3];}
+    | ABS '(' e ')'
+        {$$ = Math.abs($3);}
+    | RAND '(' ')'
+        {$$ = Math.random();}
+    | SQRT '(' e ')'
+        {$$ = Math.sqrt($3);}
     ;
 
 STRING_FUNCTIONS
@@ -181,6 +201,18 @@ STRING_FUNCTIONS
             var str = JSON.stringify(String($3))
             $$ = str.substring(1, str.length-1);
         }
+    | FIELD '(' e ')'
+        {
+            $$ = typeof window.parserFields[$3] !== undefined 
+                ? window.parserFields[$3] 
+                : null;
+        }
+    | LEN '(' e ')'
+        {$$ = $3.length;}
+    | UPPER '(' e ')'
+        {$$ = $3.toUpperCase();}
+    | LOWER '(' e ')'
+        {$$ = $3.toLowerCase();}
     ;
 
 DATE_TIME_FUNCTIONS

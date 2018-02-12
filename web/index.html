@@ -1,68 +1,205 @@
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Expression Parser</title>
-    <script
-        src="http://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous" 
-    ></script>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
     <script src="../dist/parser.js"></script>
     <link rel="stylesheet" type="text/css" href="./style.css" />
-  </head>
-  <body>
-      <div id="wrapper">
+</head>
+
+<body>
+    <div id='functions'>
+        <h3>
+            <b>Variables</b>
+        </h3>
+        <br />
+        <ul>
+            <li>firstName: John</li>
+            <li>lastName: Doe</li>
+            <li>email: john.doe@example.com</li>
+            <li>score: 78</li>
+        </ul>
+
+        <br />
+        <br />
+        <h3>
+            <b>Functions</b>
+        </h3>
+        <dl>
+            <dt>Variables</dt>
+            <dd>@FIELD()</dd>
+        </dl>
+
+        <dl>
+            <dt>Logic</dt>
+            <dd>@COMPUTE()</dd>
+            <dd>@IF()</dd>
+            <dd>@AND()</dd>
+            <dd>@OR()</dd>
+            <dd>@NOT()</dd>
+            <dd class='missing'>@TRUE()</dd>
+            <dd class='missing'>@FALSE()</dd>
+        </dl>
+
+        <dl>
+            <dt>Text and data</dt>
+            <dd>@ADDSLASHES()</dd>
+            <dd class='missing'>@CHAR()</dd>
+            <dd class='missing'>@CODE()</dd>
+            <dd>@CONCATENATE()</dd>
+            <dd>@CONTAINS()</dd>
+            <dd>@FIND()</dd>
+            <dd>@LEFT()</dd>
+            <dd>@LEN()</dd>
+            <dd>@LOWER()</dd>
+            <dd>@MID()</dd>
+            <dd class='missing'>@PROPER()</dd>
+            <dd class='missing'>@REPEAT()</dd>
+            <dd>@RIGHT()</dd>
+            <dd class='missing'>@SEARCH()</dd>
+            <dd class='missing'>@SUBSTITUTE()</dd>
+            <dd class='missing'>@TRIM()</dd>
+            <dd>@UPPER()</dd>
+            <dd class='missing'>@URLENCODE()</dd>
+            <dd class='missing'>@URLDECODE()</dd>
+            <dd class='missing'>@YMDTODAY()</dd>
+            <dd class='missing'>@YMDNOW()</dd>
+        </dl>
+
+        <dl>
+            <dt>Date and Time</dt>
+            <dd class='missing'>@DATEDIF()</dd>
+            <dd class='missing'>@DATEVALUE()</dd>
+            <dd class='missing'>@DAY()</dd>
+            <dd class='missing'>@HOUR()</dd>
+            <dd>@LOCALTODAY()</dd>
+            <dd>@LOCALNOW()</dd>
+            <dd class='missing'>@MINUTE()</dd>
+            <dd class='missing'>@MONTH()</dd>
+            <dd>@NOW()</dd>
+            <dd class='missing'>@SECOND()</dd>
+            <dd class='missing'>@TIME()</dd>
+            <dd class='missing'>@TIMEVALUE()</dd>
+            <dd>@TODAY()</dd>
+            <dd class='missing'>@WEEKDAY()</dd>
+            <dd>@YEAR()</dd>
+        </dl>
+
+        <dl>
+            <dt>Math and Trig</dt>
+            <dd>@ABS()</dd>
+            <dd class='missing'>@CEILING()</dd>
+            <dd class='missing'>@DEGREES()</dd>
+            <dd class='missing'>@EVEN()</dd>
+            <dd class='missing'>@FLOOR()</dd>
+            <dd class='missing'>@INT()</dd>
+            <dd class='missing'>@MROUND()</dd>
+            <dd class='missing'>@ODD()</dd>
+            <dd class='missing'>@PI()</dd>
+            <dd class='missing'>@POWER()</dd>
+            <dd class='missing'>@PRODUCT()</dd>
+            <dd class='missing'>@QUOTIENT()</dd>
+            <dd class='missing'>@RADIANS()</dd>
+            <dd>@RAND()</dd>
+            <dd class='missing'>@RANDBETWEEN()</dd>
+            <dd>@ROUND()</dd>
+            <dd class='missing'>@ROUNDDOWN()</dd>
+            <dd class='missing'>@ROUNDUP()</dd>
+            <dd class='missing'>@SIGN()</dd>
+            <dd>@SQRT()</dd>
+            <dd class='missing'>@SUM()</dd>
+            <dd class='missing'>@TRUNC()</dd>
+        </dl>
+
+        <dl>
+            <dt>Statistical</dt>
+            <dd>@MAX()</dd>
+            <dd>@MIN()</dd>
+        </dl>
+
+        <dl>
+            <dt>Information</dt>
+            <dd class='missing'>@ISBLANK()</dd>
+            <dd class='missing'>@ISEVEN()</dd>
+            <dd class='missing'>@ISNA()</dd>
+            <dd class='missing'>@ISNUMBER()</dd>
+            <dd class='missing'>@ISODD()</dd>
+            <dd class='missing'>@NA()</dd>
+        </dl>
+
+        <br />
+        <br />
+
+    </div>
+
+    <div id="wrapper">
         <h1>Expression Parser Demo</h1>
         <p>This demo parses mathematical expressions and returns the answer, keeping the correct order of operations. </p>
-        <p>Enter an expression to evaluate, such as <b>4 ^ 2 + 5</b></p>
+        <p>Enter an expression to evaluate, such as
+            <b>@COMPUTE(4 ^ 2 + 5)~</b>
+        </p>
         <p>
             <div id="expression-wrapper">
                 <span>Expression</span>
-                <textarea id='expression'>4 ^ 2 + 5</textarea>
+                <textarea id='expression'>
+Dear @FIELD("firstName")~, 
+
+Thanks for your interest.
+This offer is available until 31/12/@YEAR(NOW())~
+                        
+Here are your details details:
+Name: @CONCATENATE(@FIELD('firstName'), ' ', @FIELD('lastName'))~
+Email: @FIELD('email')~
+Coupon code: @IF(@FIELD('score') > 65, '65OFF', '15OFF')~
+Invitation: @UPPER(@CONCATENATE(@FIELD("firstName"),@ROUND(@RAND()*1000000,0),@TODAY()))~
+                </textarea>
             </div>
-            
-            <div id='examples-wrapper'>
-                <span id='examples-toggle'>Examples:</span>
-                <div id='examples'>
-                    <div class="example">IF(CONTAINS("123ContactForm", "123"), "IT CONTAINS", "DOES NOT CONTAIN")</div>
-                    <div class="example">CONCATENATE(MIN(1,2,3), MAX(0,1,2), FIND("FormBuilder", "r"), " ", "rocks!")</div>
-                    <div class="example">MID("alex@123formbuilder.com",FIND("alex@123formbuilder.com", "@"),
-                            FIND("alex@123formbuilder.com",".")-FIND("alex@123formbuilder.com", "@")-1)</div>
-                </div>
-            </div>
-                
+
             <div id='result-wrapper'>
                 <span>Result</span>
                 <textarea id="result"></textarea>
             </div>
         </p>
     </div>
-  </body>
-  <script>
-        $(document).ready(function () {
+</body>
+<script>
+    window.parserFields = {
+        'firstName': 'John',
+        'lastName': 'Doe',
+        'email': 'john.doe@example.com',
+        'score': 78,
+    };
 
-            function calculate(){
-                try {
-                    var result = parser.parse($("#expression").val());
-                    $("#result").html(String(result));
-                } catch (e) {
-                    $("#result").html(String(e));
-                }
+    $(document).ready(function () {
+
+        function calculate() {
+            try {
+                var regexExpresions = /@[A-Z]{2,}\(.*?\)~/g;
+                var regexFunctions = /@(?=IF|AND|OR|NOT|MIN|MAX|ROUND|CONCATENATE|LEFT|RIGHT|MID|FIND|CONTAINS|ADDSLASHES|LOCALNOW|LOCALTODAY|NOW|YEAR|TODAY|FIELD|ABS|RAND|COMPUTE|SQRT|LEN|UPPER|LOWER\()/g;
+                var text = $("#expression").val();
+
+                var parsedText = text.replace(regexExpresions, function (string) {
+                    string = string.replace(regexFunctions, '');
+                    return parser.parse(string.substring(0, string.length - 1));
+                });
+
+                $("#result").html(String(parsedText));
+            } catch (e) {
+                $("#result").html(String(e));
             }
+        }
 
-            $("#expression").keyup(function () {
-                calculate();
-            });
-
-            $('#examples-toggle').click(function(){
-                $('#examples').slideToggle();
-            });
-
+        $("#expression").keyup(function () {
             calculate();
         });
-    </script>
+
+        calculate();
+    });
+</script>
+
 </html>
